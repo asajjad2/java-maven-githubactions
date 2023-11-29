@@ -1,0 +1,19 @@
+name: ci/cd java-maven
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: build docker
+        run: |
+          docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+          docker build -t asajjad2/maven-java-app .
+      - name: push docker
+        run: docker push asajjad2/maven-java-app
